@@ -1,0 +1,23 @@
+{
+  "31337": {
+    "fastlane": {
+      "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+    },
+    "exploreURL": "#"
+  },
+  
+  "80001": {
+    "exploreURL": "https://mumbai.polygonscan.com/"
+  },
+  
+  "59140": {
+  },
+  
+  "23295":{
+
+  },
+  
+  "421614": {
+
+  }
+}
