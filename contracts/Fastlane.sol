@@ -8,8 +8,10 @@ contract Fastlane {
     uint256 public tokenPrice;
     address [] public admins;
     address [] public segmentOwners;
+    uint256 totalTracks;
 
     mapping(address => uint256) private balance;
+    mapping(uint256 => address) private trackOwner;
 
     constructor(
         string memory _name,
@@ -74,9 +76,16 @@ contract Fastlane {
     // this will need to be changed from public but just for initial testing 
     //this might have to be incorporate into minting the track segments
 
-    function addSegemntOwner(address segmentOwner) public {
-        require(segmentOwner != address(0), "segment owner cannot be a 0 address");
-        segmentOwners.push(segmentOwner);
+    function mintSegment(address user) public {
+        uint256 trackId = totalTracks + 1;
+        trackOwner[trackId] = user;
+        addSegmentOwner(user);
+        totalTracks++;
+    }
+
+    function addSegmentOwner(address user) private {
+        require(user != address(0), "segment owner cannot be a 0 address");
+        segmentOwners.push(user);
     }
 
     //this will return an array of segment owners
@@ -101,7 +110,7 @@ contract Fastlane {
     //returns a list of Admins
 
     function getAdmins() external view returns (address[] memory) {
-    return admins;
+        return admins;
     }
 
      //This function will be used only by the contract owners to withdraw funds from the contract

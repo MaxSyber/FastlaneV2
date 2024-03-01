@@ -1,11 +1,12 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { provider, fastlane } from './reducers'
+import { provider, fastlane, obstacles } from './reducers'
 
 const reducer = combineReducers({
 	provider,
-	fastlane
+	fastlane,
+	obstacles
 })
 
 const initialState = {}

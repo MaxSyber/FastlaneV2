@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 import FASTLANE_ABI from '../abis/Fastlane.json'
+import OBSTACLES_ABI from '../abis/Obstacles.json'
 
 export const loadProvider = (dispatch) => {
 	const connection = new ethers.providers.Web3Provider(window.ethereum)
@@ -25,17 +26,32 @@ export const loadAccount = async (provider, dispatch) => {
 }
 
 export const loadFastlane = async (provider, address, dispatch) => {
-const fastlane = new ethers.Contract(address, FASTLANE_ABI, provider)
+	const fastlane = new ethers.Contract(address, FASTLANE_ABI, provider)
 		dispatch({ type: 'FASTLANE_LOADING', fastlane })
 
 		const segmentOwners = (await fastlane.getSegmentOwners()).toString()
 		dispatch({ type: 'SEGMENT_OWNERS_LOADED', segmentOwners})
 
-		const userBalance = (await fastlane.balanceOf("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")).toString()
+		const user = await provider.getSigner().getAddress()
+
+		const userBalance = (await fastlane.balanceOf(user)).toString()
 		dispatch({ type: 'USER_BALANCE_LOADED', userBalance})
 
 		dispatch ({ type: 'FASTLANE_LOADED', fastlane })
-		return fastlane
+
+		const totalTracks = await fastlane.totalTrackss
+		dispatch({ type: 'TOTAL_TRACKS_LOADED', totalTracks})
+		console.log(totalTracks)
 
 	return fastlane
+}
+
+export const loadObstacles = async (provider, address, dispatch) => {
+const obstacles = new ethers.Contract(address, OBSTACLES_ABI, provider)
+		dispatch({ type: 'OBSTACLES_LOADING', obstacles })
+
+		dispatch ({ type: 'OBSTACLES_LOADED', obstacles })
+		return obstacles
+
+	return obstacles
 }

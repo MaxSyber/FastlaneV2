@@ -14,3 +14,8 @@ create simple road segment NFT (token Id, owner)
 create favicon
 
 https://github.com/MaxSyber/Fastlane.git  github link
+
+
+
+mint trackID, owner
+addsSegmentOwner()

@@ -36,10 +36,10 @@ describe('Fastlane', () => {
     it('Buys a token, splits the token fee and updates balences', async () => {
     const tokenPrice = tokens(5)
     balanceBefore = await ethers.provider.getBalance(user1.address)
-    await fastlane.connect(deployer).addSegemntOwner(user2.address)
-    await fastlane.connect(deployer).addSegemntOwner(user3.address)
-    await fastlane.connect(deployer).addSegemntOwner(user4.address)
-    await fastlane.connect(deployer).addSegemntOwner(user5.address)
+    await fastlane.connect(deployer).mintSegment(user2.address)
+    await fastlane.connect(deployer).mintSegment(user3.address)
+    await fastlane.connect(deployer).mintSegment(user4.address)
+    await fastlane.connect(deployer).mintSegment(user5.address)
     transaction = await fastlane.connect(user1).buyToken({value: tokenPrice})
     result = await transaction.wait()
     balanceAfter = await ethers.provider.getBalance(user1.address)
@@ -52,6 +52,7 @@ describe('Fastlane', () => {
     expect (balance3).to.equal(tokens(1))
     const balance4= await fastlane.balanceOf(user5.address)
     expect (balance4).to.equal(tokens(1))
+    expect(totalTracks).to.equal(4)
     })
 
     it('Adds a new admin', async () => {
@@ -62,8 +63,8 @@ describe('Fastlane', () => {
     })
 
     it('Adds a new segment owner', async () => {
-      await fastlane.connect(deployer).addSegemntOwner(user2.address)
-      await fastlane.connect(deployer).addSegemntOwner(user3.address)
+      await fastlane.connect(deployer).mintSegment(user2.address)
+      await fastlane.connect(deployer).mintSegment(user3.address)
       const segmentOwners = await fastlane.getSegmentOwners()
       expect(segmentOwners).to.include(user2.address)
       expect(segmentOwners).to.include(user3.address)
@@ -73,10 +74,10 @@ describe('Fastlane', () => {
 
     it('Users can withdraw their balance from the contract', async () => {
       const tokenPrice = tokens(5)
-      await fastlane.connect(deployer).addSegemntOwner(user2.address)
-      await fastlane.connect(deployer).addSegemntOwner(user3.address)
-      await fastlane.connect(deployer).addSegemntOwner(user4.address)
-      await fastlane.connect(deployer).addSegemntOwner(user5.address)
+      await fastlane.connect(deployer).mintSegment(user2.address)
+      await fastlane.connect(deployer).mintSegment(user3.address)
+      await fastlane.connect(deployer).mintSegment(user4.address)
+      await fastlane.connect(deployer).mintSegment(user5.address)
       balanceBefore = await ethers.provider.getBalance(user2.address)
       await fastlane.connect(user1).buyToken({value: tokenPrice})
       const balance1= await fastlane.balanceOf(user2.address)
@@ -91,7 +92,7 @@ describe('Fastlane', () => {
       const tokenPrice = tokens(5)
       balanceBefore = await ethers.provider.getBalance(deployer.address)
       console.log(balanceBefore)
-      await fastlane.connect(deployer).addSegemntOwner(user2.address)
+      await fastlane.connect(deployer).mintSegment(user2.address)
       transaction = await fastlane.connect(user1).buyToken({value: tokenPrice})
       result = await transaction.wait()
       transacion2 = await fastlane.connect(deployer).adminWithdraw(tokens(5))
@@ -121,7 +122,7 @@ describe('Failure cases', () => {
 
     it('Stops any non-owner attempting to adminWithdraw from contract', async () => {
       const tokenPrice = tokens(5)
-      await fastlane.connect(deployer).addSegemntOwner(user2.address)
+      await fastlane.connect(deployer).mintSegment(user2.address)
       await fastlane.connect(user2).buyToken({value: tokenPrice})
       await expect(fastlane.connect(user1).adminWithdraw(user1.address)).to.be.reverted
     })

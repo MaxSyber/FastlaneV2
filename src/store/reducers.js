@@ -21,11 +21,13 @@ export const provider = (state = {}, action) => {
 		return state
 	}
 }
+
 const DEFAULT_FASTLANE_STATE = {
-	loaded:false, 
+	loading:false, 
 	contract: {},
 	segmentOwners:[],
 	userBalance: [],
+	totalTracks: null,
 	events: [] 
 }
 
@@ -58,6 +60,42 @@ export const fastlane = (state = DEFAULT_FASTLANE_STATE, action) => {
 				loading: false,
 				userBalance: action.userBalance
 			}
+
+		case 'TOTAL_TRACKS_LOADED':
+			return {
+				...state,
+				loading: false,
+				totalTracks: action.totalTracks
+			}	
+
+		default:
+			return state
+	}
+}
+
+const DEFAULT_OBSTACLES_STATE = {
+	loaded:false, 
+	contract: {},
+}
+
+export const obstacles = (state = DEFAULT_OBSTACLES_STATE, action) => {
+
+	switch (action.type) {
+
+		case 'OBSTACLES_LOADING':
+	      	return {
+	        ...state,
+	        loaded: true,
+      		}
+
+		case 'OBSTACLES_LOADED':
+			return {
+				...state,
+				loaded: true,
+				contract: action.obstacles
+			}
+
+
 		default:
 			return state
 	}

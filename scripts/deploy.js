@@ -5,19 +5,32 @@ const wait = (seconds) => {
 
 async function main() {
   console.log(`Preparing Deployment...\n`)
-  //Fetch contract to deploy
+  //Fetch contracts to deploy
   const Fastlane = await ethers.getContractFactory('Fastlane')
+  const Obstacles = await ethers.getContractFactory('Obstacles')
   //Fetch Accounts
   const accounts = await ethers.getSigners()
-  //Delploy Contract
-  const fastlane = await Fastlane.deploy("Fastlane", ethers.utils.parseEther('20'))//put deploy perameters here
+  //Delploy Contracts
+  const fastlane = await Fastlane.deploy("Fastlane", ethers.utils.parseEther('20'))
   await fastlane.deployed()
-  console.log(`Contract Deployed to: ${fastlane.address}`)
+  console.log(`Fastlane Contract Deployed to: ${fastlane.address}`)
+
+  const obstacles = await Obstacles.deploy("Obstacles", "12")
+  await obstacles.deployed()
+  console.log(`Obstacles Contract Deployed to: ${obstacles.address}`)
+
+  //owner will mint the first segment to provide a road at the start
+
   let transaction
   const owner = accounts[0]
-  transaction = await fastlane.connect(owner).addSegemntOwner(owner.address)
+  transaction = await fastlane.connect(owner).mintSegment(owner.address)
   await transaction.wait()
   console.log(`First Segment owner added`)
+
+  transaction = await obstacles.connect(owner).mintAllTokens(owner.address)
+  await transaction.wait()
+  console.log(`Minted to deployer ${owner.address}\n`)
+
 }
 
 main()
