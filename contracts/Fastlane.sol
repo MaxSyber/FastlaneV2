@@ -8,7 +8,7 @@ contract Fastlane {
     uint256 public tokenPrice;
     address [] public admins;
     address [] public segmentOwners;
-    uint256 totalTracks;
+    uint256 public totalTracks;
 
     mapping(address => uint256) private balance;
     mapping(uint256 => address) private trackOwner;

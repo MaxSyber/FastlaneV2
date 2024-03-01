@@ -6,6 +6,7 @@ const Testing = () => {
     const fastlane = useSelector(state => state.fastlane.contract)
     const userAccount = useSelector(state => state.provider.account)
     const userBalance = useSelector(state => state.fastlane.userBalance)
+   	console.log(userAccount)
     
     
 	const handleBuy = async () => {
@@ -27,6 +28,12 @@ const Testing = () => {
         await transaction.wait()
     }
 
+    const mint = async () => {
+    	const signer = provider.getSigner()
+    	let transaction = await fastlane.connect(signer).mintSegment(userAccount)
+        await transaction.wait()
+    }
+
 	return(
 		<div className=''>
 		 		<div>
@@ -35,6 +42,7 @@ const Testing = () => {
 		 		<div> Total Winings: {userBalance}
 		 			<br></br>
 		 			<button onClick={collect}>Collect Winnings</button>
+		 			<button onClick={mint}>Mint Track</button>
 		 		</div>		
 		</div>
 	)

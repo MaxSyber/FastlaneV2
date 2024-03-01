@@ -39,7 +39,8 @@ export const loadFastlane = async (provider, address, dispatch) => {
 
 		dispatch ({ type: 'FASTLANE_LOADED', fastlane })
 
-		const totalTracks = await fastlane.totalTrackss
+		const totalTrack = await fastlane.totalTracks()
+		const totalTracks = totalTrack.toString();
 		dispatch({ type: 'TOTAL_TRACKS_LOADED', totalTracks})
 		console.log(totalTracks)
 
@@ -51,7 +52,7 @@ const obstacles = new ethers.Contract(address, OBSTACLES_ABI, provider)
 		dispatch({ type: 'OBSTACLES_LOADING', obstacles })
 
 		dispatch ({ type: 'OBSTACLES_LOADED', obstacles })
-		return obstacles
+		
 
 	return obstacles
 }

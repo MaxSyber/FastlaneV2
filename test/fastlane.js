@@ -52,7 +52,7 @@ describe('Fastlane', () => {
     expect (balance3).to.equal(tokens(1))
     const balance4= await fastlane.balanceOf(user5.address)
     expect (balance4).to.equal(tokens(1))
-    expect(totalTracks).to.equal(4)
+    expect(await fastlane.totalTracks()).to.equal(4)
     })
 
     it('Adds a new admin', async () => {
