@@ -1,0 +1,10 @@
+<script type="module">
+  import { io } from "https://cdn.socket.io/4.7.4/socket.io.esm.min.js";
+
+const socket = io.connect("ws://10.31.1.210:3001");
+socket.on("connect", ()=>{console.log("connected");
+socket.emit("server.revealRow",1337,0)})
+socket.on("client.revealRow", (rowId, obstaclesInRow) => {
+        console.log("Reveal data for row: " + rowId + " " + JSON.stringify(obstaclesInRow))
+    });
+</script>
