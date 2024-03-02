@@ -41,6 +41,7 @@ function App() {
     <>
       <img src= {Landpage} className='background' alt='fastlane'/>
       <Navbar />
+      <Testing />
     </>
   );
 }

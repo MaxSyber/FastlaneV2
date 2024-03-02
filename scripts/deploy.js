@@ -11,7 +11,7 @@ async function main() {
   //Fetch Accounts
   const accounts = await ethers.getSigners()
   //Delploy Contracts
-  const fastlane = await Fastlane.deploy("Fastlane", ethers.utils.parseEther('20'))
+  const fastlane = await Fastlane.deploy("Fastlane", ethers.utils.parseEther('.001'))
   await fastlane.deployed()
   console.log(`Fastlane Contract Deployed to: ${fastlane.address}`)
 
@@ -29,7 +29,7 @@ async function main() {
 
   transaction = await obstacles.connect(owner).mintAllTokens(owner.address)
   await transaction.wait()
-  console.log(`Minted to deployer ${owner.address}\n`)
+  console.log(`First Track Minted to Deployer ${owner.address}\n`)
 
 }
 
@@ -42,4 +42,7 @@ main()
 
   //Code to run script to localhost [npx hardhat run --network localhost scripts/deploy.js]
   //Code to run script to mumbai [npx hardhat run --network mumbai scripts/deploy.js]
+  //Code to run script to mumbai [npx hardhat run --network arbitrium scripts/deploy.js]
+  //Code to run script to mumbai [npx hardhat run --network linea scripts/deploy.js]
+  //
   

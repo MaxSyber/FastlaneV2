@@ -10,7 +10,7 @@ const Testing = () => {
     
     
 	const handleBuy = async () => {
-        const buyTokenPrice = ethers.utils.parseEther("20")
+        const buyTokenPrice = ethers.utils.parseEther(".001")
         const signer = provider.getSigner()
         let transaction = await fastlane.connect(signer).buyToken({value: buyTokenPrice}) 
         await transaction.wait()
