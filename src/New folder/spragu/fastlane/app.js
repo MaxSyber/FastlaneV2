@@ -1,7 +1,6 @@
 import { Server } from 'socket.io';
 import { ethers } from 'ethers';
 import * as sapphire from '@oasisprotocol/sapphire-paratime';
-// import { StartGameEventHandler, PlayerProgressedRowEventHandler } from './gameManager.js';
 
 import express from 'express';
 import http from 'http';
@@ -22,7 +21,8 @@ export function StartSocketIOServer(expressServer){
     new Server(expressServer).on('connection', (socket) => {
         socketIOConnection = socket;
         console.log('a user connected. Initializing event handlers');
-        socketIOConnection.on('server.revealRow', async (sessionId, rowIndex)=> revealRowASYNC(sessionId, rowIndex));
+        socketIOConnection.on('server.revealRow', async (sessionId, rowIndex)=> await revealRowASYNC(sessionId, rowIndex));
+        socketIOConnection.on('server.addSegment', async (chainId, obstacles)=> await addSegmentASYNC (chainId, obstacles));
     });
 }
 
@@ -30,6 +30,16 @@ async function newSessionASYNC(chainId, sessionId)
 {
     playerSessionToChainIdMapping[sessionId] = chainId;
     obstaclesInSession[sessionId] = await getAllObstaclesASYNC(chainId);
+}
+
+async function addSegmentASYNC(chainId, obstacles){
+    const chainId = playerSessionToChainIdMapping[sessionId];
+    const signer = sapphire
+      .wrap(new ethers.Wallet(process.env.TEST_TRACK_OWNER_PKEY))
+      .connect(ethers.getDefaultProvider(sapphire.NETWORKS.testnet.defaultGateway));
+    
+      const contract = new ethers.Contract(process.env.OASIS_CONTRACT_ADDR, abi, signer);
+      return await contract.addSegment(chainId, obstacles)
 }
 
 async function revealRowASYNC(sessionId, rowIndex)
