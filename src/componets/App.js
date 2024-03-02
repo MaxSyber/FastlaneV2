@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux'
 import config from '../config.json'
+import Landpage from '../assets/Landpage.png'
+//<Testing />
+
 
 import { loadProvider, loadNetwork, loadAccount, loadFastlane, loadObstacles } from '../store/interactions';
 import Navbar from './Navbar'
@@ -34,14 +37,11 @@ function App() {
   })
   
   return (
-    <div className="App">
-      <header className="App-header">
-          
-      </header>
+    
+    <>
+      <img src= {Landpage} className='background' alt='fastlane'/>
       <Navbar />
-
-      <Testing />
-    </div>
+    </>
   );
 }
 

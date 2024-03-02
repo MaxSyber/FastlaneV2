@@ -1,14 +1,15 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { loadAccount } from '../store/interactions'
-//mport config from '../config.json'
-
+import Linea from '../assets/Linea.svg'
+import oasis from '../assets/oasis.svg'
+import polygon from '../assets/polygon.svg'
+import arbitrum from '../assets/arbitrum2.png'
 
 const Navbar = () => {
 	const provider = useSelector(state => state.provider.connection)
 	const chainId = useSelector(state => state.provider.chainId)
 	const account = useSelector(state => state.provider.account)
 	const dispatch = useDispatch()
-
 
 	const networks = {
                 "13881": { // Matic Testnet
@@ -87,21 +88,22 @@ const Navbar = () => {
 
 	return(
 		<div className=''>
-			<div className=''>
-				<h1 className='title'> FASTLANE </h1>
-			</div>
+		
+		<div className='network-container'>
 			<div className='network'>  Choose Network:
             
           	</div>
 		{chainId && (
 			<div>
-				<button onClick={() => networkHandler(13881)}> Matic </button>
-        		<button value ="704" onClick={() => networkHandler(704)}> Linea </button>
-        		<button value ="5aff" onClick={() => networkHandler('5aff')}> Oasis </button>
-        		<button value ="66eee" onClick={() => networkHandler('66eee')}> Arbitrium </button>
+				<img src= {polygon} className='network-icons' onClick={() => networkHandler(13881)} alt='polygon'/>
+				<img src= {Linea} className='network-icons' onClick={() => networkHandler(704)} alt='Linea'/>
+				<img src= {oasis} className='network-icons' onClick={() => networkHandler('5aff')}  alt='oasis'/>
+				<img src= {arbitrum} className='network-icons' onClick={() => networkHandler('66eee')} alt='arbitrium'/>
         	</div>
         	)}
+		</div>
 		 		<div>
+		 			<button className='play'>Play Game</button>
 		 			{account ? (
 		 				<button className='account'>
 		 					{account.slice(0,5) +'...' + account.slice(38,42)}
