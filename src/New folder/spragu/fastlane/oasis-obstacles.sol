@@ -1,28 +1,28 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.0;
 
 contract OasisObstacle {
     // uint256[] public obstacleIndices;
     mapping(address => bool) public owners;
     mapping(uint256 => uint256[]) public chainObstacles;
     uint256 constant COLUMNS = 5;
-    uint256[5] firstRow = [0,0,420,69,0];
+
     modifier onlyOwner() {
         require(owners[msg.sender], "Caller is not an owner");
         _;
     }
 
     constructor() {
-        owners[msg.sender] = true;     
-        addRow(1337, firstRow);
+        owners[msg.sender] = true;
+        addRow(1337,0,0,69,420,0);
     }
 
-    function addSegment(uint256 chainId, uint256[] calldata obstacleIds) public
+    function addSegment(uint256 chainId, uint256[] memory obstacleIds)
     {
-        uint256[5] memory row0 = [obstacleIds[0], obstacleIds[1], obstacleIds[2], obstacleIds[3], obstacleIds[4]];
-        uint256[5] memory row1 = [obstacleIds[5], obstacleIds[6], obstacleIds[7], obstacleIds[8], obstacleIds[9]];
-        uint256[5] memory row2 = [obstacleIds[10], obstacleIds[11], obstacleIds[12], obstacleIds[13], obstacleIds[14]];
-        uint256[5] memory row3 = [obstacleIds[15], obstacleIds[16], obstacleIds[17], obstacleIds[18], obstacleIds[19]];
+        uint256[] memory row0 = [obstacleIds[0], obstacleIds[1], obstacleIds[2], obstacleIds[3], obstacleIds[4]];
+        uint256[] memory row1 = [obstacleIds[5], obstacleIds[6], obstacleIds[7], obstacleIds[8], obstacleIds[9]];
+        uint256[] memory row2 = [obstacleIds[10], obstacleIds[11], obstacleIds[12], obstacleIds[13], obstacleIds[14]];
+        uint256[] memory row3 = [obstacleIds[15], obstacleIds[16], obstacleIds[17], obstacleIds[18], obstacleIds[19]];
 
         addRow(chainId, row0); 
         addRow(chainId, row1); 
@@ -30,7 +30,7 @@ contract OasisObstacle {
         addRow(chainId, row3); 
     }
 
-    function addRow(uint256 chainId, uint256[5] memory obstacleIds) public
+    function addRow(uint256 chainId, uint256[] memory obstacleIds) public
     {
         addObstacle(chainId,obstacleIds[0]);
         addObstacle(chainId,obstacleIds[1]);

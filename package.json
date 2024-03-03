@@ -1,6 +1,7 @@
 {
   "name": "fastlane",
   "version": "0.1.0",
+"type": "module",
   "private": true,
   "dependencies": {
     "@openzeppelin/contracts": "^4.4.0",

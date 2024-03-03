@@ -11,7 +11,7 @@ async function main() {
   //Fetch Accounts
   const accounts = await ethers.getSigners()
   //Delploy Contracts
-  const fastlane = await Fastlane.deploy("Fastlane", ethers.utils.parseEther('.001'))
+  const fastlane = await Fastlane.deploy("Fastlane", ethers.utils.parseEther('.001'))  
   await fastlane.deployed()
   console.log(`Fastlane Contract Deployed to: ${fastlane.address}`)
 

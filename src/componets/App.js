@@ -5,9 +5,9 @@ import Landpage from '../assets/Landpage.png'
 //<Testing />
 
 
-import { loadProvider, loadNetwork, loadAccount, loadFastlane, loadObstacles } from '../store/interactions';
-import Navbar from './Navbar'
-import Testing from './Testing'
+import { loadProvider, loadNetwork, loadAccount, loadFastlane, loadObstacles } from '../store/interactions.js';
+import Navbar from './Navbar.js'
+import Testing from './Testing.js'
 
 function App() {
   const dispatch = useDispatch()

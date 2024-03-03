@@ -1,10 +1,11 @@
-
 import { Server } from 'socket.io';
 import { ethers } from 'ethers';
 import * as sapphire from '@oasisprotocol/sapphire-paratime';
-import http from 'http';
+// import { StartGameEventHandler, PlayerProgressedRowEventHandler } from './gameManager.js';
 
 import express from 'express';
+import http from 'http';
+
 const app = express();
 const server = http.createServer(app);
 
@@ -17,18 +18,13 @@ export function EmitMessage(topic, ...message){
     socketIOConnection.emit(topic, ...message)
 }
 
-    export function StartSocketIOServer(expressServer){
-        new Server(expressServer,{ cors: {  
-            origin: 'http://localhost:8080',  
-            methods: ["GET", "POST"]
-            }  
-            }).on('connection', (socket) => {
-            socketIOConnection = socket;
-            console.log('a user connected. Initializing event handlers');
-            socketIOConnection.on('server.revealRow', async (chainId, sessionId, rowIndex)=> {console.log("reveal row called");await revealRowASYNC(chainId, sessionId, rowIndex)});
-            socketIOConnection.on('server.addSegment', async (chainId, obstacles)=> await addSegmentASYNC (chainId, obstacles));
-        });
-    }
+export function StartSocketIOServer(expressServer){
+    new Server(expressServer).on('connection', (socket) => {
+        socketIOConnection = socket;
+        console.log('a user connected. Initializing event handlers');
+        socketIOConnection.on('server.revealRow', async (sessionId, rowIndex)=> revealRowASYNC(sessionId, rowIndex));
+    });
+}
 
 async function newSessionASYNC(chainId, sessionId)
 {
@@ -36,18 +32,8 @@ async function newSessionASYNC(chainId, sessionId)
     obstaclesInSession[sessionId] = await getAllObstaclesASYNC(chainId);
 }
 
-async function addSegmentASYNC(chainId, obstacles){
-    const signer = sapphire
-      .wrap(new ethers.Wallet(process.env.TEST_TRACK_OWNER_PKEY))
-      .connect(ethers.getDefaultProvider(sapphire.NETWORKS.testnet.defaultGateway));
-    
-      const contract = new ethers.Contract(process.env.OASIS_CONTRACT_ADDR, abi, signer);
-      return await contract.addSegment(chainId, obstacles)
-}
-
-async function revealRowASYNC(chainId, sessionId, row)
+async function revealRowASYNC(sessionId, rowIndex)
 {
-    let rowIndex = row * 5;
     if(!playerSessionToChainIdMapping[sessionId])
         await newSessionASYNC(chainId, sessionId);
     
@@ -57,7 +43,7 @@ async function revealRowASYNC(chainId, sessionId, row)
         obstaclesInRow[2] = obstaclesInSession[sessionId][rowIndex + 2];
         obstaclesInRow[3] = obstaclesInSession[sessionId][rowIndex + 3];
         obstaclesInRow[4] = obstaclesInSession[sessionId][rowIndex + 4];
-        EmitMessage("client.revealRow", row, obstaclesInRow)
+        return obstaclesInRow;
 }
 
 async function getAllObstaclesASYNC(chainId){
@@ -81,7 +67,7 @@ app.get('/', (req, res) => {
     res.send('<h1>Hello world</h1>');
   });
   
-  server.listen(3001, () => {
-    console.log('listening on *:3001');
+  server.listen(3000, () => {
+    console.log('listening on *:3000');
     StartSocketIOServer(server);
   });   
